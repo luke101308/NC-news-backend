@@ -1,20 +1,36 @@
 const mongoose = require("mongoose");
 const { Article, Comment, Topic, User } = require("../models");
+mongoose.Promise = Promise;
+const {
+  createUserRefObj,
+  createArticleRefObj,
+  formatArticle,
+  formatComment
+} = require("../utils");
 
-const seedDB = () => {
+const seedDB = data => {
   return mongoose.connection
     .dropDatabase()
     .then(() => {
-      return Topic.insertMany(topicData);
+      return Topic.insertMany(data.topicData);
     })
-    .then(topicDocs => {
-      return promise.all([
-        Article.insertMany(articleData),
-        User.insertMany(userData)
+    .then(() => {
+      return User.insertMany(data.userData);
+    })
+    .then(userDocs => {
+      return createUserRefObj(data.userData, userDocs);
+    })
+    .then(lookupUsers => {
+      return Promise.all([
+        Article.insertMany(formatArticle(data.articleData, lookupUsers)),
+        lookupUsers
       ]);
     })
-    .then(({ articleDocs, userDocs }) => {
-      comment.insertMany(commentData);
+    .then(([articleDocs, lookupUsers]) => {
+      const lookupArticles = createArticleRefObj(data.articleData, articleDocs);
+      return Comment.insertMany(
+        formatComment(data.commentData, lookupArticles, lookupUsers)
+      );
     });
 };
 
