@@ -9,28 +9,43 @@ const {
 } = require("../utils");
 
 const seedDB = data => {
+  console.log("A");
   return mongoose.connection
     .dropDatabase()
     .then(() => {
+      console.log("B");
       return Topic.insertMany(data.topicData);
     })
-    .then(() => {
-      return User.insertMany(data.userData);
+    .then(topicDocs => {
+      console.log("C");
+      return Promise.all([User.insertMany(data.userData), topicDocs]);
     })
-    .then(userDocs => {
-      return createUserRefObj(data.userData, userDocs);
-    })
-    .then(lookupUsers => {
+    .then(([userDocs, topicDocs]) => {
+      console.log("snow");
       return Promise.all([
-        Article.insertMany(formatArticle(data.articleData, lookupUsers)),
-        lookupUsers
+        createUserRefObj(data.userData, userDocs),
+        userDocs,
+        topicDocs
       ]);
     })
-    .then(([articleDocs, lookupUsers]) => {
+    .then(([lookupUsers, userDocs, topicDocs]) => {
+      return Promise.all([
+        Article.insertMany(formatArticle(data.articleData, lookupUsers)),
+        lookupUsers,
+        userDocs,
+        topicDocs
+      ]);
+    })
+    .then(([articleDocs, lookupUsers, userDocs, topicDocs]) => {
       const lookupArticles = createArticleRefObj(data.articleData, articleDocs);
-      return Comment.insertMany(
-        formatComment(data.commentData, lookupArticles, lookupUsers)
-      );
+      return Promise.all([
+        Comment.insertMany(
+          formatComment(data.commentData, lookupArticles, lookupUsers)
+        ),
+        articleDocs,
+        userDocs,
+        topicDocs
+      ]);
     });
 };
 
