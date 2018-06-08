@@ -1,3 +1,5 @@
+const { Comment } = require("../models");
+
 const createUserRefObj = (data, docs) => {
   return data.reduce((acc, datum, index) => {
     acc[datum.username] = docs[index]._id;
@@ -32,9 +34,18 @@ const formatComment = (commentData, lookupArticles, lookupUsers) => {
   });
 };
 
+const createCommentCount = article => {
+  return Comment.count({ belongs_to: article._id })
+    .then(count => {
+      return count;
+    })
+    .catch(console.log);
+};
+
 module.exports = {
   createUserRefObj,
   createArticleRefObj,
   formatArticle,
-  formatComment
+  formatComment,
+  createCommentCount
 };

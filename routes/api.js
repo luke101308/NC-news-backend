@@ -10,6 +10,6 @@ apiRouter.use("/comments", commentsRouter);
 
 apiRouter.use("/topics", topicsRouter);
 
-apiRouter.use("./users", usersRouter);
+apiRouter.use("/users", usersRouter);
 
 module.exports = apiRouter;
