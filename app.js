@@ -10,6 +10,10 @@ mongoose.connect(DB_URL).then(() => {
 
 app.use(bodyParser.json());
 
+app.get("/", (req, res, next) => {
+  res.send(require("./homepage"));
+});
+
 app.use("/api", apiRouter);
 
 app.use((err, req, res, next) => {
