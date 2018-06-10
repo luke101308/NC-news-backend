@@ -9,14 +9,41 @@ const getAllTopics = (req, res, next) => {
 
 const getArticlesByTopic = (req, res, next) => {
   const { topic_slug } = req.params;
-  Article.find({ belongs_to: topic_slug }).then(articles => {
-    articles[0] === undefined
-      ? next({
+  Article.find({ belongs_to: topic_slug }).then(articlesDocs => {
+    if (articlesDocs[0] === undefined){
+       next({
           status: 404,
           message: `error:404 ${topic_slug} not present in database`
+        })}
+    else{
+      return Promise.all([
+        articlesDocs,
+        ...articlesDocs.map(article => {
+          return Comment.count({ belongs_to: article._id }).then(comment => {
+            return comment;
+          });
         })
-      : res.send({ articles });
-  });
+      ]);
+    }
+  }).then(([articlesDocs, ...count]) => {
+    articles = [];
+    articlesDocs.forEach((article, i) => {
+      articles.push({
+        _id: article._id,
+        title: article.title,
+        body: article.body,
+        belongs_to: article.belongs_to,
+        votes: article.votes,
+        created_by: article.created_by,
+        comments: count[i],
+        _v: article._v
+      });
+    });
+    return articles;
+  })
+    .then(articles => {
+      res.send({ articles });
+    });
 };
 
 const postNewArticle = (req, res, next) => {
