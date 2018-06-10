@@ -2,48 +2,53 @@ const { User, Article, Comment, Topic } = require("../models");
 const { createCommentCount } = require("../utils");
 
 const getAllTopics = (req, res, next) => {
-  Topic.find().then(topics => {
-    res.send({ topics });
-  });
+  Topic.find()
+    .then(topics => {
+      res.send({ topics });
+    })
+    .catch(next);
 };
 
 const getArticlesByTopic = (req, res, next) => {
   const { topic_slug } = req.params;
-  Article.find({ belongs_to: topic_slug }).then(articlesDocs => {
-    if (articlesDocs[0] === undefined){
-       next({
+  Article.find({ belongs_to: topic_slug })
+    .then(articlesDocs => {
+      if (articlesDocs[0] === undefined) {
+        next({
           status: 404,
           message: `error:404 ${topic_slug} not present in database`
-        })}
-    else{
-      return Promise.all([
-        articlesDocs,
-        ...articlesDocs.map(article => {
-          return Comment.count({ belongs_to: article._id }).then(comment => {
-            return comment;
-          });
-        })
-      ]);
-    }
-  }).then(([articlesDocs, ...count]) => {
-    articles = [];
-    articlesDocs.forEach((article, i) => {
-      articles.push({
-        _id: article._id,
-        title: article.title,
-        body: article.body,
-        belongs_to: article.belongs_to,
-        votes: article.votes,
-        created_by: article.created_by,
-        comments: count[i],
-        _v: article._v
+        });
+      } else {
+        return Promise.all([
+          articlesDocs,
+          ...articlesDocs.map(article => {
+            return Comment.count({ belongs_to: article._id }).then(comment => {
+              return comment;
+            });
+          })
+        ]);
+      }
+    })
+    .then(([articlesDocs, ...count]) => {
+      articles = [];
+      articlesDocs.forEach((article, i) => {
+        articles.push({
+          _id: article._id,
+          title: article.title,
+          body: article.body,
+          belongs_to: article.belongs_to,
+          votes: article.votes,
+          created_by: article.created_by,
+          comments: count[i],
+          _v: article._v
+        });
       });
-    });
-    return articles;
-  })
+      return articles;
+    })
     .then(articles => {
       res.send({ articles });
-    });
+    })
+    .catch(next);
 };
 
 const postNewArticle = (req, res, next) => {
@@ -86,7 +91,8 @@ const getAllArticles = (req, res, next) => {
     })
     .then(articles => {
       res.send({ articles });
-    });
+    })
+    .catch(next);
 };
 
 const getArticleByArticleId = (req, res, next) => {
@@ -161,14 +167,16 @@ const changeCommentVoteCount = (req, res, next) => {
 
 const getUserByUsername = (req, res, next) => {
   const { username } = req.params;
-  User.find({ username: username }).then(([user]) => {
-    user === undefined
-      ? next({
-          status: 404,
-          message: `error:404 ${username} not present in database`
-        })
-      : res.send(user);
-  });
+  User.find({ username: username })
+    .then(([user]) => {
+      user === undefined
+        ? next({
+            status: 404,
+            message: `error:404 ${username} not present in database`
+          })
+        : res.send(user);
+    })
+    .catch(next);
 };
 
 const deleteComment = (req, res, next) => {
@@ -177,7 +185,7 @@ const deleteComment = (req, res, next) => {
     .then(comment => {
       res.status(202).send({ msg: `${id} sucessfully deleted` });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 module.exports = {

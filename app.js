@@ -29,8 +29,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log("he");
-  console.log(err);
+  res.send({ err });
 });
 
 module.exports = app;
