@@ -23,6 +23,8 @@ tests can be run by running `npm t` in your terminal
 
 Tests confirm that all routes function properly, as well as testing error-handling middleware for client-side errors.
 
+If you wish to look at a model for how it should work within a browser, check out https://northcoders-news-production.herokuapp.com/
+
 ## Built With
 
 Mongodb
