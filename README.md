@@ -25,6 +25,8 @@ Tests confirm that all routes function properly, as well as testing error-handli
 
 If you wish to look at a model for how it should work within a browser, check out https://northcoders-news-production.herokuapp.com/
 
+For non-get routes, consider installing postman from https://www.getpostman.com/
+
 ## Built With
 
 Mongodb
