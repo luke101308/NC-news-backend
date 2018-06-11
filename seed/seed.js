@@ -9,19 +9,15 @@ const {
 } = require("../utils");
 
 const seedDB = data => {
-  console.log("A");
   return mongoose.connection
     .dropDatabase()
     .then(() => {
-      console.log("B");
       return Topic.insertMany(data.topicData);
     })
     .then(topicDocs => {
-      console.log("C");
       return Promise.all([User.insertMany(data.userData), topicDocs]);
     })
     .then(([userDocs, topicDocs]) => {
-      console.log("snow");
       return Promise.all([
         createUserRefObj(data.userData, userDocs),
         userDocs,

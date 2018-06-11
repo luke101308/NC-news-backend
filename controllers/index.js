@@ -99,7 +99,6 @@ const getArticleByArticleId = (req, res, next) => {
   const { id } = req.params;
   Article.find({ _id: id })
     .then(articleArr => {
-      console.log(articleArr[0]);
       if (articleArr[0] === undefined) {
         next({
           status: 404,
