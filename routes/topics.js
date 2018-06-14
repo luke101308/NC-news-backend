@@ -1,8 +1,11 @@
 const {
   getAllTopics,
+} = require("../controllers/topics");
+
+const {
   getArticlesByTopic,
   postNewArticle
-} = require("../controllers");
+} = require("../controllers/articles")
 
 const topicsRouter = require("express").Router();
 

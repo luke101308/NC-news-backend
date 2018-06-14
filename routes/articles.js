@@ -1,10 +1,13 @@
 const {
   getAllArticles,
   getArticleByArticleId,
+  changeArticleVoteCount
+} = require("../controllers/articles");
+
+const {
   getCommentsForArticle,
   postNewComment,
-  changeArticleVoteCount
-} = require("../controllers");
+} = require("../controllers/comments")
 
 const articlesRouter = require("express").Router();
 

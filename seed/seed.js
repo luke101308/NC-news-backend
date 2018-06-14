@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Article, Comment, Topic, User } = require("../models");
-mongoose.Promise = Promise;
 const {
   createUserRefObj,
   createArticleRefObj,

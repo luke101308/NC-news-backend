@@ -16,6 +16,10 @@ app.get("/", (req, res, next) => {
 
 app.use("/api", apiRouter);
 
+app.use('/*', () => {
+  res.status(404).send({err: "page not found"})
+})
+
 app.use((err, req, res, next) => {
   err.status ? res.status(err.status).send({ err: err.message }) : next(err);
 });
@@ -29,7 +33,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  res.send({ err });
+  res.status(500).send({err: "Internal Server Error"});
 });
 
 module.exports = app;

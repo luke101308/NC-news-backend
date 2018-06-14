@@ -226,7 +226,7 @@ describe("/", () => {
             })
             .expect(400)
             .then(res => {
-              console.log(res.body);
+
               expect(res.body.err).to.equal(
                 "comments validation failed: created_by: Path `created_by` is required."
               );

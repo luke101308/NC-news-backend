@@ -1,11 +1,11 @@
 {
   "GET /api/topics": "Returns all topics",
 
-  "GET /api/topics/:topic_name/articles":
-    "Returns all articles for the topic specified in :topic_name",
+  "GET /api/topics/:topic_slug/articles":
+    "Returns all articles for the topic specified in :topic_slug",
 
-  "POST /api/topics/:topic_name/articles":
-    "Posts a new article to the topic specified in :topic_name (Post should send a JSON object with title, body and created_by keys - created_by will eventually be handled through the frontend component, for now it requires the user_id)",
+  "POST /api/topics/:topic_slug/articles":
+    "Posts a new article to the topic specified in :topic_slug (Post should send a JSON object with title, body and created_by keys - created_by will eventually be handled through the frontend component, for now it requires the user_id)",
 
   "GET /api/articles": "Returns all articles",
 
