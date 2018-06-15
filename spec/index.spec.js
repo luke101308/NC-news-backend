@@ -273,7 +273,7 @@ describe("/", () => {
         })
       })
     });
-    describe.only("/users", () => {
+    describe("/users", () => {
       describe("/:username", () => {
         it("GET will return status 200 and a user object", () => {
           return request.get("/api/users/dedekind561").then(res => {
