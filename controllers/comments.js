@@ -41,7 +41,7 @@ const changeCommentVoteCount = (req, res, next) => {
 const deleteComment = (req, res, next) => {
     const { comment_id } = req.params;
     Comment.findByIdAndRemove(comment_id)
-      .then(comment => {
+      .then(() => {
         res.status(202).send({ msg: `${comment_id} sucessfully deleted` });
       })
       .catch(next);

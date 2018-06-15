@@ -26,9 +26,6 @@ const getAllArticles = (req, res, next) => {
             _v: article._v
           });
         });
-        return articles;
-      })
-      .then(articles => {
         res.send({ articles });
       })
       .catch(next);
@@ -99,9 +96,6 @@ const changeArticleVoteCount = (req, res, next) => {
             _v: article._v
           });
         });
-        return articles;
-      })
-      .then(articles => {
         res.send({ articles });
       })
       .catch(next);
