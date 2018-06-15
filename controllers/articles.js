@@ -33,16 +33,15 @@ const getAllArticles = (req, res, next) => {
   
   const getArticleByArticleId = (req, res, next) => {
     const { article_id } = req.params;
-    Article.find({ _id: article_id })
-      .then(articleArr => {
-        if (articleArr[0] === undefined) {
+    Article.findById(article_id)
+      .then(article => {
+        if (article === null) {
           next({
             status: 404,
             message: "err: Page not found, invalid article ID"
           });
         } else {
-         const article = articleArr[0];
-          res.send(article);
+          res.send({article});
         }
       })
       .catch(next);
@@ -104,9 +103,10 @@ const changeArticleVoteCount = (req, res, next) => {
   const postNewArticle = (req, res, next) => {
     const { topic_slug } = req.params;
     const { title, body, created_by } = req.body;
-    Article.insertMany([{ title, body, created_by, belongs_to: topic_slug }])
-      .then(article => {
-        res.status(201).send({ article: article[0] });
+    const article = new Article({ title, body, created_by, belongs_to: topic_slug }) 
+    article.save()
+    .then(article => {
+        res.status(201).send({ article });
       })
       .catch(next);
   };

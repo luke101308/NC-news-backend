@@ -117,7 +117,7 @@ describe("/", () => {
             .get(`/api/articles/${articleDocs[0]._id}`)
             .expect(200)
             .then(res => {
-              expect(res.body).to.contain.all.keys(
+              expect(res.body.article).to.contain.all.keys(
                 "_id",
                 "title",
                 "created_by",
@@ -125,7 +125,7 @@ describe("/", () => {
                 "belongs_to",
                 "votes"
               );
-              expect(res.body._id).equal('' + articleDocs[0]._id);
+              expect(res.body.article._id).equal('' + articleDocs[0]._id);
             });
         });
         it("GET will return status 404 and an err msg when passed an valid MongoID, not present in the database", () => {
@@ -273,7 +273,7 @@ describe("/", () => {
         })
       })
     });
-    describe("/users", () => {
+    describe.only("/users", () => {
       describe("/:username", () => {
         it("GET will return status 200 and a user object", () => {
           return request.get("/api/users/dedekind561").then(res => {

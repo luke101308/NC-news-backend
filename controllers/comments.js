@@ -17,9 +17,10 @@ const getCommentsForArticle = (req, res, next) => {
   const postNewComment = (req, res, next) => {
     const { article_id } = req.params;
     const { body, created_by } = req.body;
-    Comment.insertMany([{ body, created_by, belongs_to: article_id }])
+    comment = new Comment({ body, created_by, belongs_to: article_id })
+    comment.save()
       .then(comment => {
-        res.status(201).send({ comment: comment[0] });
+        res.status(201).send({ comment });
       })
       .catch(next);
   };
