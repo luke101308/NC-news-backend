@@ -9,7 +9,7 @@ const getUserByUsername = (req, res, next) => {
               status: 404,
               message: `error:404 ${username} not present in database`
             })
-          : res.send(user);
+          : res.send({user});
       })
       .catch(next);
   };

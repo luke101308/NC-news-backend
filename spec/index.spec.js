@@ -153,7 +153,7 @@ describe("/", () => {
             .put(`/api/articles/${articleDocs[0]._id}?vote=up`)
             .expect(202)
             .then(res => {
-              expect(res.body.votes).to.equal(1);
+              expect(res.body.article.votes).to.equal(1);
             });
         });
         it("PUT will return status 202 and an article object with an decreased vote count", () => {
@@ -161,7 +161,7 @@ describe("/", () => {
             .put(`/api/articles/${articleDocs[0]._id}?vote=down`)
             .expect(202)
             .then(res => {
-              expect(res.body.votes).to.equal(-1);
+              expect(res.body.article.votes).to.equal(-1);
             });
         });
       });
@@ -250,7 +250,7 @@ describe("/", () => {
           .put(`/api/comments/${commentDocs[0]._id}?vote=up`)
           .expect(202)
           .then(res => {
-            expect(res.body.votes).to.equal(8);
+            expect(res.body.comment.votes).to.equal(8);
           });
         });
         it("PUT will return status 202 and an comment object with an decreased vote count", () => {
@@ -258,7 +258,7 @@ describe("/", () => {
           .put(`/api/comments/${commentDocs[0]._id}?vote=down`)
           .expect(202)
           .then(res => {
-            expect(res.body.votes).to.equal(6);
+            expect(res.body.comment.votes).to.equal(6);
           });
         });
         it("DELETE will return status 202 and an msg", () => {
@@ -277,14 +277,14 @@ describe("/", () => {
       describe("/:username", () => {
         it("GET will return status 200 and a user object", () => {
           return request.get("/api/users/dedekind561").then(res => {
-            expect(res.body).to.contain.all.keys(
+            expect(res.body.user).to.contain.all.keys(
               "username",
               "name",
               "avatar_url",
               "_id",
               "__v"
             );
-            expect(res.body).to.contain(
+            expect(res.body.user).to.contain(
               {
                 username: "dedekind561" ,
                 name: "mitch",

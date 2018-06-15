@@ -33,8 +33,8 @@ const changeCommentVoteCount = (req, res, next) => {
     else if (vote === "down") direction = -1;
     else direction = 0;
     Comment.findByIdAndUpdate(comment_id, { $inc: { votes: direction } }, { new: true })
-      .then(Comment => {
-        res.status(202).send(Comment);
+      .then(comment => {
+        res.status(202).send({comment});
       })
       .catch(next);
   };

@@ -56,7 +56,7 @@ const changeArticleVoteCount = (req, res, next) => {
     else direction = 0;
     Article.findByIdAndUpdate(article_id, { $inc: { votes: direction } }, { new: true })
       .then(article => {
-        res.status(202).send(article);
+        res.status(202).send({article});
       })
       .catch(next);
   };
