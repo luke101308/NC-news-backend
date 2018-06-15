@@ -27,6 +27,8 @@ describe("/", () => {
           .expect(200)
           .then(res => {
             expect(res.body.topics[0]).to.contain.all.keys(["title", "slug"]);
+            expect(res.body.topics.length).to.equal(2)
+
           });
       });
       describe("/:topic_slug/articles", () => {
@@ -43,6 +45,7 @@ describe("/", () => {
                 "created_by"
               );
               expect(res.body.articles[0].belongs_to).to.equal("cats");
+              expect(res.body.articles.length).to.equal(2)
             });
         });
         it("GET will return status 404 and an error message when topic_slug is not a topic in the database", () => {
@@ -65,15 +68,16 @@ describe("/", () => {
             })
             .expect(201)
             .then(res => {
-              expect(res.body.article).to.contain.all.keys(
-                "title",
-                "body",
-                "belongs_to",
-                "votes",
-                "created_by"
-              );
-            });
+              expect(res.body.article).to.contain({
+                title: "new article",
+              body: "This is my new article content",
+              created_by: "5b1925c83bd6dd33bca3228a",
+                belongs_to: "cats",
+                votes: 0
+              });
+              expect(res.body.article).to.contain.all.keys("title", "body", "created_by", "belongs_to", "votes");
         });
+      });
         it("POST will return status 400 and what is missing if attempting to post with missing arguments", () => {
           return request
             .post("/api/topics/cats/articles")
@@ -104,6 +108,7 @@ describe("/", () => {
               "comments"
             ]);
             expect(res.body.articles[0].comments).to.equal(2);
+            expect(res.body.articles.length).to.equal(4)
           });
       });
       describe("/:article_id", () => {
@@ -120,7 +125,7 @@ describe("/", () => {
                 "belongs_to",
                 "votes"
               );
-              expect(res.body._id).equal("" + articleDocs[0]._id);
+              expect(res.body._id).equal('' + articleDocs[0]._id);
             });
         });
         it("GET will return status 404 and an err msg when passed an valid MongoID, not present in the database", () => {
@@ -176,6 +181,7 @@ describe("/", () => {
               expect(res.body.comments[0].belongs_to).to.equal(
                 "" + articleDocs[0]._id
               );
+              expect(res.body.comments.length).to.equal(2)
             });
         });
         it("GET will return status 404 and an err msg when passed an valid MongoID, not present in the database", () => {
@@ -202,12 +208,16 @@ describe("/", () => {
           return request
             .post(`/api/articles/${articleDocs[0]._id}/comments`)
             .send({
-              title: "new article",
-              body: "This is my new article content",
+              body: "This is my new comment",
               created_by: userDocs[0]._id
             })
             .expect(201)
             .then(res => {
+              expect(res.body.comment).to.contain({
+                body: "This is my new comment",
+                created_by: '' + userDocs[0]._id,
+                votes: 0,
+              })
               expect(res.body.comment).to.contain.all.keys(
                 "body",
                 "belongs_to",
@@ -221,8 +231,7 @@ describe("/", () => {
           return request
             .post(`/api/articles/${articleDocs[0]._id}/comments`)
             .send({
-              title: "new article",
-              body: "This is my new article content"
+              body: "This is my new comment"
             })
             .expect(400)
             .then(res => {
@@ -234,7 +243,7 @@ describe("/", () => {
         });
       });
     });
-    describe.only("/comments", () => {
+    describe("/comments", () => {
       describe(("/comment_id"), () => {
         it("PUT will return status 202 and an comment object with an increased vote count", () => {
           return request
@@ -275,6 +284,12 @@ describe("/", () => {
               "_id",
               "__v"
             );
+            expect(res.body).to.contain(
+              {
+                username: "dedekind561" ,
+                name: "mitch",
+                avatar_url: "https://carboncostume.com/wordpress/wp-content/uploads/2017/10/dale-chipanddalerescuerangers.jpg"
+              })
           });
         });
         it("GET will return status 404 an an err msg", () => {
