@@ -13,7 +13,7 @@ const getAllArticles = (req, res, next) => {
         ]);
       })
       .then(([articlesDocs, ...count]) => {
-        articles = [];
+       const articles = [];
         articlesDocs.forEach((article, i) => {
           articles.push({
             _id: article._id,
@@ -44,7 +44,7 @@ const getAllArticles = (req, res, next) => {
             message: "err: Page not found, invalid article ID"
           });
         } else {
-          article = articleArr[0];
+         const article = articleArr[0];
           res.send(article);
         }
       })
@@ -86,7 +86,7 @@ const changeArticleVoteCount = (req, res, next) => {
         }
       })
       .then(([articlesDocs, ...count]) => {
-        articles = [];
+        const articles = [];
         articlesDocs.forEach((article, i) => {
           articles.push({
             _id: article._id,
