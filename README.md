@@ -31,7 +31,7 @@ The code is set to default to the Dev enviroment, if no enviroment is declared o
 
 `module.exports = require(`./${path}DB`);`
 
-then each database url, as well as the port express will use to listen. This should be stored in a {dev-enviroment}DB.js on an object. and directly exported in the following format. In the example below, I have used port 9090, as that is the port I reserve for express, but you can use any free port. 
+then each database url, as well as the port express will use to listen. This should be stored in a {enviroment}DB.js on an object. and directly exported in the following format. In the example below, I have used port 9090, as that is the port I reserve for express, but you can use any free port. 
 
 `module.exports = {`
   
