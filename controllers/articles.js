@@ -35,8 +35,8 @@ const getAllArticles = (req, res, next) => {
   };
   
   const getArticleByArticleId = (req, res, next) => {
-    const { id } = req.params;
-    Article.find({ _id: id })
+    const { article_id } = req.params;
+    Article.find({ _id: article_id })
       .then(articleArr => {
         if (articleArr[0] === undefined) {
           next({
@@ -52,13 +52,13 @@ const getAllArticles = (req, res, next) => {
   };
   
 const changeArticleVoteCount = (req, res, next) => {
-    const { id } = req.params;
+    const { article_id } = req.params;
     const { vote } = req.query;
     let direction;
     if (vote === "up") direction = 1;
     else if (vote === "down") direction = -1;
     else direction = 0;
-    Article.findByIdAndUpdate(id, { $inc: { votes: direction } }, { new: true })
+    Article.findByIdAndUpdate(article_id, { $inc: { votes: direction } }, { new: true })
       .then(article => {
         res.status(202).send(article);
       })

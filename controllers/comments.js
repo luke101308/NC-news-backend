@@ -25,13 +25,13 @@ const getCommentsForArticle = (req, res, next) => {
   };
 
 const changeCommentVoteCount = (req, res, next) => {
-    const { id } = req.params;
+    const { comment_id } = req.params;
     const { vote } = req.query;
     let direction;
     if (vote === "up") direction = 1;
     else if (vote === "down") direction = -1;
     else direction = 0;
-    Comment.findByIdAndUpdate(id, { $inc: { votes: direction } }, { new: true })
+    Comment.findByIdAndUpdate(comment_id, { $inc: { votes: direction } }, { new: true })
       .then(Comment => {
         res.status(202).send(Comment);
       })
@@ -39,10 +39,10 @@ const changeCommentVoteCount = (req, res, next) => {
   };
  
 const deleteComment = (req, res, next) => {
-    const { id } = req.params;
-    Comment.findByIdAndRemove(id)
+    const { comment_id } = req.params;
+    Comment.findByIdAndRemove(comment_id)
       .then(comment => {
-        res.status(202).send({ msg: `${id} sucessfully deleted` });
+        res.status(202).send({ msg: `${comment_id} sucessfully deleted` });
       })
       .catch(next);
   };

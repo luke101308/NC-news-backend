@@ -106,7 +106,7 @@ describe("/", () => {
             expect(res.body.articles[0].comments).to.equal(2);
           });
       });
-      describe("/:_id", () => {
+      describe("/:article_id", () => {
         it("GET will return status 200 and an article object", () => {
           return request
             .get(`/api/articles/${articleDocs[0]._id}`)
@@ -234,25 +234,26 @@ describe("/", () => {
         });
       });
     });
-    describe("/comments", () => {
-      it("PUT will return status 202 and an comment object with an increased vote count", () => {
-        return request
+    describe.only("/comments", () => {
+      describe(("/comment_id"), () => {
+        it("PUT will return status 202 and an comment object with an increased vote count", () => {
+          return request
           .put(`/api/comments/${commentDocs[0]._id}?vote=up`)
           .expect(202)
           .then(res => {
             expect(res.body.votes).to.equal(8);
           });
-      });
-      it("PUT will return status 202 and an comment object with an decreased vote count", () => {
-        return request
+        });
+        it("PUT will return status 202 and an comment object with an decreased vote count", () => {
+          return request
           .put(`/api/comments/${commentDocs[0]._id}?vote=down`)
           .expect(202)
           .then(res => {
             expect(res.body.votes).to.equal(6);
           });
-      });
-      it("DELETE will return status 202 and an msg", () => {
-        return request
+        });
+        it("DELETE will return status 202 and an msg", () => {
+          return request
           .delete(`/api/comments/${commentDocs[0]._id}`)
           .expect(202)
           .then(res => {
@@ -260,7 +261,8 @@ describe("/", () => {
               `${commentDocs[0]._id} sucessfully deleted`
             );
           });
-      });
+        })
+      })
     });
     describe("/users", () => {
       describe("/:username", () => {

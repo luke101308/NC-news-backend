@@ -19,7 +19,7 @@ articlesRouter
   .post(postNewComment);
 
 articlesRouter
-  .route("/:id")
+  .route("/:article_id")
   .get(getArticleByArticleId)
   .put(changeArticleVoteCount);
 
