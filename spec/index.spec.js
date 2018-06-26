@@ -148,7 +148,7 @@ describe("/", () => {
               );
             });
         });
-        it("PUT will return status 202 and an article object with an increased vote count", () => {
+        it("PUT will return status 202 and an article object with an increased vote count when vote equals up", () => {
           return request
             .put(`/api/articles/${articleDocs[0]._id}?vote=up`)
             .expect(202)
@@ -156,7 +156,7 @@ describe("/", () => {
               expect(res.body.article.votes).to.equal(1);
             });
         });
-        it("PUT will return status 202 and an article object with an decreased vote count", () => {
+        it("PUT will return status 202 and an article object with an decreased vote count when vote equals down", () => {
           return request
             .put(`/api/articles/${articleDocs[0]._id}?vote=down`)
             .expect(202)
@@ -164,6 +164,14 @@ describe("/", () => {
               expect(res.body.article.votes).to.equal(-1);
             });
         });
+        it("Put will return status 202 and an article object with an unchanged vote count when vote does not equal up or down", () => {
+          return request
+          .put(`/api/articles/${articleDocs[0]._id}?vote=sausage`)
+          .expect(202)
+          .then(res => {
+            expect(res.body.article.votes).to.equal(0);
+          });
+        })
       });
       describe("/:article_id/comments", () => {
         it("GET will return status 200 and an array of all comments for a particular article", () => {

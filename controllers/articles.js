@@ -13,9 +13,8 @@ const getAllArticles = (req, res, next) => {
         ]);
       })
       .then(([articlesDocs, ...count]) => {
-       const articles = [];
-        articlesDocs.forEach((article, i) => {
-          articles.push({
+       const articles = articlesDocs.map((article, i) => {
+         formattedArticle = {
             _id: article._id,
             title: article.title,
             body: article.body,
@@ -24,7 +23,8 @@ const getAllArticles = (req, res, next) => {
             created_by: article.created_by,
             comments: count[i],
             _v: article._v
-          });
+          };
+          return formattedArticle
         });
         res.send({ articles });
       })
@@ -82,9 +82,8 @@ const changeArticleVoteCount = (req, res, next) => {
         }
       })
       .then(([articlesDocs, ...count]) => {
-        const articles = [];
-        articlesDocs.forEach((article, i) => {
-          articles.push({
+        const articles = articlesDocs.map((article, i) => {
+          formattedArticle = {
             _id: article._id,
             title: article.title,
             body: article.body,
@@ -93,7 +92,8 @@ const changeArticleVoteCount = (req, res, next) => {
             created_by: article.created_by,
             comments: count[i],
             _v: article._v
-          });
+          }
+          return formattedArticle
         });
         res.send({ articles });
       })
