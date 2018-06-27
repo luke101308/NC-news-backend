@@ -1,7 +1,7 @@
 const {Article, Comment} = require("../models");
 
 const getAllArticles = (req, res, next) => {
-    return Article.find()
+    return Article.find().populate("created_by")
       .then(articlesDocs => {
         return Promise.all([
           articlesDocs,
@@ -33,7 +33,7 @@ const getAllArticles = (req, res, next) => {
   
   const getArticleByArticleId = (req, res, next) => {
     const { article_id } = req.params;
-    Article.findById(article_id)
+    Article.findById(article_id).populate("created_by")
       .then(article => {
         if (article === null) {
           next({
@@ -63,7 +63,7 @@ const changeArticleVoteCount = (req, res, next) => {
 
   const getArticlesByTopic = (req, res, next) => {
     const { topic_slug } = req.params;
-    Article.find({ belongs_to: topic_slug })
+    Article.find({ belongs_to: topic_slug }).populate("created_by")
       .then(articlesDocs => {
         if (articlesDocs[0] === undefined) {
           next({

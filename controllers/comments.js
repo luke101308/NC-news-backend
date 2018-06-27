@@ -2,7 +2,7 @@ const { Comment } = require("../models");
 
 const getCommentsForArticle = (req, res, next) => {
     const { article_id } = req.params;
-    Comment.find({ belongs_to: article_id })
+    Comment.find({ belongs_to: article_id }).populate("created_by")
       .then(comments => {
         comments[0] === undefined
           ? next({
