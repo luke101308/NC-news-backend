@@ -27,5 +27,5 @@
   "DELETE /api/comments/:comment_id":
     "Deletes the comment specified by comment_id",
 
-  "GET /api/username/:username": "Returns the user specified by username"
+  "GET /api/users/:username": "Returns the user specified by username"
 }
