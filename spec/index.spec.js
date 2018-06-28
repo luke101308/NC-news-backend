@@ -212,7 +212,7 @@ describe("/", () => {
               );
             });
         });
-        it("POST will return status 201 and an object of the posted article", () => {
+        it.only("POST will return status 201 and an object of the posted article", () => {
           return request
             .post(`/api/articles/${articleDocs[0]._id}/comments`)
             .send({
@@ -235,7 +235,7 @@ describe("/", () => {
               );
             });
         });
-        it("POST will return status 400 and and err msg when attempting to post but missing a required field", () => {
+        it.only("POST will return status 400 and and err msg when attempting to post but missing a required field", () => {
           return request
             .post(`/api/articles/${articleDocs[0]._id}/comments`)
             .send({

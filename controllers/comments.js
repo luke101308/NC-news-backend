@@ -18,7 +18,7 @@ const getCommentsForArticle = (req, res, next) => {
     const { article_id } = req.params;
     const { body, created_by } = req.body;
     comment = new Comment({ body, created_by, belongs_to: article_id })
-    comment.save()
+    comment.populate().save()
       .then(comment => {
         res.status(201).send({ comment });
       })
